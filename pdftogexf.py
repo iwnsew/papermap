@@ -58,6 +58,7 @@ def main():
     title = ""
     mt = regtitle.match(rawtext)
     title = mt.group(1) + " " + mt.group(2)
+    title = title.replace("&", "and")
     #print title
     id2paper[len(id2paper)] = title
     for c in rawtext:

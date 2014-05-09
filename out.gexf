@@ -1,0 +1,428 @@
+<gexf xmlns="http://www.gexf.net/1.2draft" version="1.2">
+<graph mode="static" defaultedgetype="undirected">
+<nodes>
+<node id="0" label="The Vertica Query Optimizer: The Case for Specialized Query Optimizers" />
+<node id="1" label="Continuous Fragmented Skylines over Distributed Streams" />
+<node id="2" label="Head, Modiﬁer, and Constraint Detection in Short Texts" />
+<node id="3" label="Declarative Cartography: In-Database Map Generalization of Geospatial Datasets" />
+<node id="4" label="Just-in-time compilation for SQL query processing Stratis D. Viglas" />
+<node id="5" label="dbTouch in Action Database Kernels for Touch-based Data Exploration" />
+<node id="6" label="A Crowd-Based Route Recommendation System–CrowdPlanner" />
+<node id="7" label="HOPE: Iterative and Interactive Database Partitioning for OLTP Workloads" />
+<node id="8" label="LinkSCAN∗ : Overlapping Community Detection" />
+<node id="9" label="Data Stream Warehousing Lukasz Golab 1" />
+<node id="10" label="Scalable Top-k Spatio-Temporal Term Querying Anders Skovsgaard#1" />
+<node id="11" label="Finding Common Ground among Experts’ Opinions on Data Clustering: with Applications in Malware" />
+<node id="12" label="RULEMINER: Data Quality Rules Discovery Xu Chu1 Ihab F. Ilyas1 Paolo Papotti2 Yin Ye2" />
+<node id="13" label="Outsourcing Multi-Version Key-Value Stores with Veriﬁable Data Freshness" />
+<node id="14" label="SILVERBACK: Scalable Association Mining For Temporal Data in Columnar Probabilistic Databases" />
+<node id="15" label="Personalized Query Suggestion With Diversity Awareness" />
+<node id="16" label="On Masking Topical Intent in Keyword Search Peng Wang and Chinya V. Ravishankar" />
+<node id="17" label="AQUAS: A Quality-Aware Scheduler for NoSQL Data Stores" />
+<node id="18" label="Omid: Lock-free Transactional Support for Distributed Data Stores" />
+<node id="19" label="Efﬁcient Top-k Closeness Centrality Search Paul W. Olsen Jr., Alan G. Labouseur, Jeong-Hyon Hwang" />
+<node id="20" label="Devel-Op: An Optimizer Development Environment Zhibo Peng, Mitch Cherniack and Olga Papaemmanouil" />
+<node id="21" label="Cloud Service Placement via Subgraph Matching Bo Zong†, Ramya Raghavendra*" />
+<node id="22" label="Mars: Real-time Spatio-temporal Queries on Microblogs" />
+<node id="23" label="Parallel SECONDO: A Practical System for Large-Scale Processing of Moving Objects" />
+<node id="24" label="Memory-efﬁcient Centroid Decomposition for Long Time Series" />
+<node id="25" label="Pay-as-you-go Reconciliation in Schema Matching Networks" />
+<node id="26" label="Near Neighbor Join Herald Kllapi #+1" />
+<node id="27" label="Distributed and Interactive Cube Exploration Niranjan Kamat #1" />
+<node id="28" label="Stochastic Skyline Route Planning Under Time-Varying Uncertainty" />
+<node id="29" label="Incremental Discovery of Prominent Situational Facts Afroza Sultana 1" />
+<node id="30" label="Detecting Unique Column Combinations on Dynamic Data" />
+<node id="31" label="Automatic Entity-Grouping for OLTP Workloads Bin Liu, Junichi Tatemura, Oliver Po, Wang-Pin Hsiung, Hakan Hacıg¨um¨us¸" />
+<node id="32" label="iTag: Incentive-Based Tagging Siyu Lei, Xuan S. Yang, Luyi Mo, Silviu Maniu, Reynold Cheng" />
+<node id="33" label="Continuous Data Cleaning Maksims Volkovs1" />
+<node id="34" label="Scalable Distance-Based Outlier Detection over High-Volume Data Streams" />
+<node id="35" label="IQ-METER – An Evaluation Tool for Data-Transformation Systems" />
+<node id="36" label="Mercury: A Memory-Constrained Spatio-temporal Real-time Search on Microblogs" />
+<node id="37" label="Efficient Support of XQuery Full Text in SQL/XML Enabled RDBMS" />
+<node id="38" label="Engine Independence for Logical Analytic Flows Petar Jovanovic #1" />
+<node id="39" label="In-RDBMS inverted indexes revisited Ian Rae†" />
+<node id="40" label="Random-walk Domination in Large Graphs Rong-Hua Li #" />
+<node id="41" label="Interactive Hierarchical Tag Clouds for Summarizing Spatiotemporal Social Contents" />
+<node id="42" label="Waste Not... Efﬁcient Co-Processing of Relational Data" />
+<node id="43" label="A General Algorithm for Subtree Similarity-Search Sara Cohen 1" />
+<node id="44" label="VoidWiz: Resolving Incompleteness Using Network Effects" />
+<node id="45" label="ATraPos: Adaptive Transaction Processing on Hardware Islands" />
+<node id="46" label="Ranking Item Features by Mining Online User-Item Interactions" />
+<node id="47" label="Combining Information Extraction and Human Computing for Crowdsourced" />
+<node id="48" label="Top-K Interesting Subgraph Discovery in Information Networks" />
+<node id="49" label="Locality-Sensitive Operators for Parallel Main-Memory Database Clusters" />
+<node id="50" label="MassJoin: A MapReduce-based Method for Scalable String Similarity Joins" />
+<node id="51" label="Efﬁcient and Accurate Query Evaluation on Uncertain Graphs via Recursive Stratiﬁed Sampling" />
+<node id="52" label="Query Optimization of Distributed Pattern Matching Jiewen Huang, Kartik Venkatraman, Daniel J. Abadi" />
+<node id="53" label="Guaranteed Authenticity and Integrity of Data from Untrusted Servers" />
+<node id="54" label="OCTOPUS: Efﬁcient Query Execution on Dynamic Mesh Datasets" />
+<node id="55" label="A Demonstration of MNTG - A Web-based Road Network Trafﬁc Generator" />
+<node id="56" label="Fast Top-K Path-based Relevance Query on Massive Graphs" />
+<node id="57" label="A Tunable Compression Framework for Bitmap Indices" />
+<node id="58" label="Pagrol: PArallel GRaph OLap over Large-scale Attributed Graphs" />
+<node id="59" label="ADaPT: Automatic Data Personalization Based on Contextual Preferences" />
+<node id="60" label="Private Search on Key-Value Stores with Hierarchical Indexes" />
+<node id="61" label="CrowdCleaner: Data Cleaning for Multi-version Data on the Web via Crowdsourcing" />
+<node id="62" label="Automatic Generation of Question Answer Pairs From Noisy Case Logs" />
+<node id="63" label="Complete Discovery of High-Quality Patterns in Large Numerical Tensors" />
+<node id="64" label="Region Sampling and Estimation of GeoSocial Data with Dynamic Range Calibration" />
+<node id="65" label="Evaluating Multi-Way Joins over Discounted Hitting Time" />
+<node id="66" label="CrowdPlanner: A Crowd-Based Route Recommendation System" />
+<node id="67" label="Adaptive Parallel Compressed Event Matching Mohammad Sadoghi #" />
+<node id="68" label="GLog: A High Level Graph Analysis System Using MapReduce" />
+<node id="69" label="PHiDJ: Parallel Similarity Self-Join for High-Dimensional Vector Data with MapReduce" />
+<node id="70" label="Stock trade volume prediction with Yahoo Finance user browsing behavior" />
+<node id="71" label="A Hybrid Machine-Crowdsourcing System for Matching Web Tables" />
+<node id="72" label="Contract and Expand: I/O Efﬁcient SCCs Computing Zhiwei Zhang1" />
+<node id="73" label="Keyword-based Correlated Network Computation over Large Social Media" />
+<node id="74" label="Breaking out of the MisMatch Trap Yong Zeng ∗ Zhifeng Bao ∗ Tok Wang Ling ∗ H.V. Jagadish + Guoliang Li #" />
+<node id="75" label="History-aware Query Optimization with Materialized Intermediate Views" />
+<node id="76" label="XQuery Streaming by Forest Transducers Shizuya Hakuta" />
+<node id="77" label="Managing Uncertainty in Spatial and Spatio-temporal Data" />
+<node id="78" label="Answering Graph Pattern Queries Using Views Wenfei Fan 1,2" />
+<node id="79" label="Mapping and Cleaning Floris Geerts 1, Giansalvatore Mecca 2, Paolo Papotti 3, Donatello Santoro 2,4" />
+<node id="80" label="Pigeon: A Spatial MapReduce Language∗ Abstract—With the huge amounts of spatial data collected" />
+<node id="81" label="Practical k Nearest Neighbor Queries with Location Privacy" />
+<node id="82" label="Discriminative Features for Identifying and Interpreting Outliers" />
+<node id="83" label="User-Driven Reﬁnement of Imprecise Queries Bahar Qarabaqi" />
+<node id="84" label="Continuous Pattern Detection over Billion-Edge Graph Using Distributed Framework" />
+<node id="85" label="Trendspedia: An Internet Observatory for Analyzing and Visualizing the Evolving Web" />
+<node id="86" label="Generating Private Synthetic Databases for Untrusted System Evaluation" />
+<node id="87" label="Linked Data Query Processing Olaf Hartig 1" />
+<node id="88" label="We Can Learn Your #Hashtags: Connecting Tweets to Explicit Topics" />
+<node id="89" label="Geometry Approach for k-Regret Query Peng Peng, Raymond Chi-Wing Wong" />
+<node id="90" label="Modeling Data for Business Processes Yutian Sun∗1" />
+<node id="91" label="GQBE: Querying Knowledge Graphs by Example Entity Tuples∗" />
+<node id="92" label="DBDesigner: A Customizable Physical Design Tool for Vertica Analytic Database" />
+<node id="93" label="R-Store: A Scalable Distributed System for Supporting Real-time Analytics" />
+<node id="94" label="How to Partition a Billion-Node Graph Lu Wang #1" />
+<node id="95" label="Efﬁcient Instant-Fuzzy Search with Proximity Ranking" />
+<node id="96" label="Rethinking Main Memory OLTP Recovery Nirmesh Malviya #1" />
+<node id="97" label="Data Quality: The other Face of Big Data Barna Saha" />
+<node id="98" label="Fast Incremental SimRank on Link-Evolving Graphs Weiren Yu †," />
+<node id="99" label="An Efﬁcient Sampling Method for Characterizing Points of Interests on Maps" />
+<node id="100" label="Crowd-Powered Find Algorithms Anish Das Sarma #1" />
+<node id="101" label="Kondenzer: Exploration and Visualization of Archived Social Media" />
+<node id="102" label="Decorrelation of User Deﬁned Function Invocations in Queries" />
+<node id="103" label="Secure k-Nearest Neighbor Query over Encrypted Data in Outsourced Environments" />
+<node id="104" label="L2AP: Fast Cosine Similarity Search With Preﬁx L-2 Norm Bounds" />
+<node id="105" label="SAGE: A Logical and Physical Design Tool for Entity-Group Based New SQL Systems" />
+<node id="106" label="Text and Structured Data Fusion in Data Tamer at Scale" />
+<node id="107" label="KnowLife: a Knowledge Graph for Health and Life Sciences" />
+<node id="108" label="CaSSanDra: An SSD Boosted Key-Value Store Prashanth Menon #" />
+<node id="109" label="Nearest Keyword Set Search in Multi-dimensional Datasets" />
+<node id="110" label="Leveraging Metadata for Identifying Local, Robust Multi-variate Temporal (RMT) Features" />
+<node id="111" label="Large-Scale Frequent Subgraph Mining in MapReduce" />
+<node id="112" label="PAQO: Preference-Aware Query Optimization for Decentralized Database Systems" />
+<node id="113" label="Effective Location Identiﬁcation from Microblogs Guoliang Li† Jun Hu† Jianhua Feng† Kian-lee Tan‡" />
+<node id="114" label="Blazes: Coordination Analysis for Distributed Programs" />
+<node id="115" label="Exploiting Hardware Transactional Memory in Main-Memory Databases" />
+<node id="116" label="iCoDA: Interactive and Exploratory Data Completeness Analysis" />
+<node id="117" label="C-DMr: Crowd-powered Decision Maker for Real World Knapsack Problems" />
+<node id="118" label="Scalable Serializable Snapshot Isolation for Multicore Systems" />
+<node id="119" label="A Tool for Internet-Scale Cardinality Estimation of XPath Queries over Distributed Semistructured Data" />
+<node id="120" label="Exploration of the Effect of Category Match Score in Search Advertising" />
+<node id="121" label="Exploiting Group Recommendation Functions for Flexible Preferences" />
+<node id="122" label="Matching Heterogeneous Events with Patterns Xiaochen Zhu#, Shaoxu Song#, Jianmin Wang#, Philip S. Yu†, Jiaguang Sun#" />
+<node id="123" label="Incremental Cluster Evolution Tracking from Highly Dynamic Network Data" />
+<node id="124" label="MELODY-JOIN: Efﬁcient Earth Mover’s Distance Similarity Joins Using MapReduce" />
+<node id="125" label="Top-k Preferences in High Dimensions Albert Yu1" />
+<node id="126" label="Optimal Hierarchical Layouts for Cache-Oblivious Search Trees" />
+<node id="127" label="Distributed Execution of Continuous Queries Rajeev Gupta #1" />
+<node id="128" label="Subgraph Pattern Matching over Uncertain Graphs with Identity Linkage Uncertainty" />
+<node id="129" label="Towards Effective and Efﬁcient Mining of Arbitrary Shaped Clusters" />
+<node id="130" label="SLICE: Reviving Regions-Based Pruning for Reverse k Nearest Neighbors Queries" />
+<node id="131" label="Constructing Indoor Navigation Systems from Digital Building Information" />
+<node id="132" label="Proﬁling and Mining RDF Data with ProLOD++ Ziawasch Abedjan, Toni Gruetze, Anja Jentzsch, Felix Naumann" />
+</nodes>
+<edges>
+<edge id="0" source="0" target="20" weight="0.22225" />
+<edge id="1" source="0" target="38" weight="0.0720178" />
+<edge id="2" source="0" target="39" weight="0.0836435" />
+<edge id="3" source="0" target="42" weight="0.0915307" />
+<edge id="4" source="0" target="49" weight="0.0841398" />
+<edge id="5" source="0" target="52" weight="0.119554" />
+<edge id="6" source="0" target="65" weight="0.0716616" />
+<edge id="7" source="0" target="75" weight="0.185204" />
+<edge id="8" source="0" target="92" weight="0.303502" />
+<edge id="9" source="0" target="102" weight="0.0898537" />
+<edge id="10" source="0" target="112" weight="0.118108" />
+<edge id="11" source="1" target="28" weight="0.132224" />
+<edge id="12" source="1" target="29" weight="0.347799" />
+<edge id="13" source="1" target="89" weight="0.112352" />
+<edge id="14" source="2" target="71" weight="0.0729925" />
+<edge id="15" source="4" target="38" weight="0.0934063" />
+<edge id="16" source="4" target="42" weight="0.100341" />
+<edge id="17" source="6" target="28" weight="0.357908" />
+<edge id="18" source="6" target="56" weight="0.0795512" />
+<edge id="19" source="6" target="61" weight="0.137599" />
+<edge id="20" source="6" target="66" weight="0.871304" />
+<edge id="21" source="6" target="100" weight="0.0759553" />
+<edge id="22" source="6" target="121" weight="0.0827438" />
+<edge id="23" source="7" target="11" weight="0.0933829" />
+<edge id="24" source="7" target="18" weight="0.0712947" />
+<edge id="25" source="7" target="31" weight="0.10102" />
+<edge id="26" source="7" target="44" weight="0.233233" />
+<edge id="27" source="7" target="45" weight="0.138678" />
+<edge id="28" source="7" target="49" weight="0.0831984" />
+<edge id="29" source="7" target="94" weight="0.134307" />
+<edge id="30" source="7" target="105" weight="0.0848817" />
+<edge id="31" source="7" target="115" weight="0.102733" />
+<edge id="32" source="9" target="13" weight="0.0996346" />
+<edge id="33" source="9" target="67" weight="0.11835" />
+<edge id="34" source="9" target="97" weight="0.151448" />
+<edge id="35" source="9" target="114" weight="0.120064" />
+<edge id="36" source="10" target="22" weight="0.119617" />
+<edge id="37" source="10" target="36" weight="0.120537" />
+<edge id="38" source="10" target="41" weight="0.0720732" />
+<edge id="39" source="10" target="69" weight="0.0979128" />
+<edge id="40" source="10" target="77" weight="0.0884269" />
+<edge id="41" source="10" target="85" weight="0.0904955" />
+<edge id="42" source="12" target="97" weight="0.133788" />
+<edge id="43" source="13" target="14" weight="0.104165" />
+<edge id="44" source="13" target="18" weight="0.0759182" />
+<edge id="45" source="13" target="50" weight="0.0963294" />
+<edge id="46" source="13" target="53" weight="0.181711" />
+<edge id="47" source="13" target="60" weight="0.0840115" />
+<edge id="48" source="13" target="101" weight="0.112272" />
+<edge id="49" source="13" target="114" weight="0.0749428" />
+<edge id="50" source="14" target="71" weight="0.0773781" />
+<edge id="51" source="14" target="100" weight="0.0740013" />
+<edge id="52" source="14" target="111" weight="0.121899" />
+<edge id="53" source="14" target="114" weight="0.0780624" />
+<edge id="54" source="15" target="56" weight="0.0773674" />
+<edge id="55" source="15" target="59" weight="0.101488" />
+<edge id="56" source="16" target="60" weight="0.0850307" />
+<edge id="57" source="17" target="108" weight="0.0948503" />
+<edge id="58" source="18" target="31" weight="0.13967" />
+<edge id="59" source="18" target="45" weight="0.136978" />
+<edge id="60" source="18" target="53" weight="0.261548" />
+<edge id="61" source="18" target="60" weight="0.0886024" />
+<edge id="62" source="18" target="96" weight="0.206358" />
+<edge id="63" source="18" target="105" weight="0.0987377" />
+<edge id="64" source="18" target="108" weight="0.0950679" />
+<edge id="65" source="18" target="115" weight="0.278789" />
+<edge id="66" source="18" target="118" weight="0.257889" />
+<edge id="67" source="19" target="52" weight="0.135289" />
+<edge id="68" source="19" target="58" weight="0.0797077" />
+<edge id="69" source="19" target="84" weight="0.177678" />
+<edge id="70" source="19" target="94" weight="0.0892588" />
+<edge id="71" source="20" target="38" weight="0.167053" />
+<edge id="72" source="20" target="52" weight="0.144607" />
+<edge id="73" source="20" target="75" weight="0.186739" />
+<edge id="74" source="20" target="92" weight="0.0772864" />
+<edge id="75" source="20" target="105" weight="0.0885797" />
+<edge id="76" source="20" target="112" weight="0.122029" />
+<edge id="77" source="21" target="48" weight="0.0890654" />
+<edge id="78" source="21" target="52" weight="0.164297" />
+<edge id="79" source="21" target="73" weight="0.0865936" />
+<edge id="80" source="21" target="94" weight="0.0747351" />
+<edge id="81" source="21" target="111" weight="0.117557" />
+<edge id="82" source="21" target="128" weight="0.0971691" />
+<edge id="83" source="22" target="36" weight="0.435685" />
+<edge id="84" source="22" target="85" weight="0.115023" />
+<edge id="85" source="22" target="101" weight="0.0734868" />
+<edge id="86" source="22" target="113" weight="0.253535" />
+<edge id="87" source="23" target="55" weight="0.0971245" />
+<edge id="88" source="24" target="46" weight="0.0872045" />
+<edge id="89" source="24" target="98" weight="0.0842084" />
+<edge id="90" source="24" target="110" weight="0.112349" />
+<edge id="91" source="25" target="33" weight="0.0768091" />
+<edge id="92" source="25" target="71" weight="0.151675" />
+<edge id="93" source="25" target="83" weight="0.0725501" />
+<edge id="94" source="25" target="122" weight="0.096665" />
+<edge id="95" source="25" target="128" weight="0.112408" />
+<edge id="96" source="26" target="49" weight="0.0795576" />
+<edge id="97" source="26" target="69" weight="0.0768269" />
+<edge id="98" source="27" target="58" weight="0.199896" />
+<edge id="99" source="27" target="93" weight="0.305629" />
+<edge id="100" source="27" target="101" weight="0.201705" />
+<edge id="101" source="28" target="29" weight="0.137799" />
+<edge id="102" source="28" target="66" weight="0.27332" />
+<edge id="103" source="28" target="77" weight="0.0709408" />
+<edge id="104" source="28" target="128" weight="0.0736205" />
+<edge id="105" source="29" target="89" weight="0.116928" />
+<edge id="106" source="29" target="125" weight="0.113265" />
+<edge id="107" source="31" target="45" weight="0.118992" />
+<edge id="108" source="31" target="48" weight="0.076176" />
+<edge id="109" source="31" target="53" weight="0.108789" />
+<edge id="110" source="31" target="96" weight="0.0972758" />
+<edge id="111" source="31" target="100" weight="0.0808667" />
+<edge id="112" source="31" target="105" weight="0.745316" />
+<edge id="113" source="31" target="115" weight="0.13149" />
+<edge id="114" source="31" target="118" weight="0.114984" />
+<edge id="115" source="31" target="128" weight="0.0835302" />
+<edge id="116" source="32" target="41" weight="0.0820205" />
+<edge id="117" source="33" target="79" weight="0.269468" />
+<edge id="118" source="33" target="90" weight="0.0705793" />
+<edge id="119" source="33" target="97" weight="0.269403" />
+<edge id="120" source="34" target="82" weight="0.2829" />
+<edge id="121" source="35" target="79" weight="0.0745638" />
+<edge id="122" source="36" target="69" weight="0.0936087" />
+<edge id="123" source="36" target="79" weight="0.0739345" />
+<edge id="124" source="36" target="113" weight="0.427257" />
+<edge id="125" source="37" target="39" weight="0.139749" />
+<edge id="126" source="37" target="74" weight="0.101325" />
+<edge id="127" source="37" target="76" weight="0.0976557" />
+<edge id="128" source="37" target="119" weight="0.0771355" />
+<edge id="129" source="38" target="39" weight="0.072298" />
+<edge id="130" source="38" target="105" weight="0.0793277" />
+<edge id="131" source="39" target="95" weight="0.127959" />
+<edge id="132" source="41" target="85" weight="0.128575" />
+<edge id="133" source="42" target="49" weight="0.0884656" />
+<edge id="134" source="43" target="126" weight="0.0786255" />
+<edge id="135" source="45" target="49" weight="0.0997412" />
+<edge id="136" source="45" target="53" weight="0.0858968" />
+<edge id="137" source="45" target="96" weight="0.118392" />
+<edge id="138" source="45" target="105" weight="0.0868456" />
+<edge id="139" source="45" target="115" weight="0.193528" />
+<edge id="140" source="45" target="118" weight="0.156144" />
+<edge id="141" source="46" target="56" weight="0.105043" />
+<edge id="142" source="46" target="59" weight="0.122496" />
+<edge id="143" source="46" target="100" weight="0.16556" />
+<edge id="144" source="46" target="110" weight="0.0729673" />
+<edge id="145" source="46" target="121" weight="0.117452" />
+<edge id="146" source="46" target="125" weight="0.0749575" />
+<edge id="147" source="47" target="71" weight="0.0965633" />
+<edge id="148" source="47" target="83" weight="0.0787745" />
+<edge id="149" source="47" target="95" weight="0.203915" />
+<edge id="150" source="47" target="100" weight="0.114276" />
+<edge id="151" source="47" target="107" weight="0.114442" />
+<edge id="152" source="48" target="52" weight="0.132147" />
+<edge id="153" source="48" target="56" weight="0.147831" />
+<edge id="154" source="48" target="73" weight="0.160685" />
+<edge id="155" source="48" target="78" weight="0.082829" />
+<edge id="156" source="48" target="91" weight="0.0783709" />
+<edge id="157" source="48" target="94" weight="0.089325" />
+<edge id="158" source="48" target="111" weight="0.184671" />
+<edge id="159" source="48" target="122" weight="0.107427" />
+<edge id="160" source="48" target="128" weight="0.226116" />
+<edge id="161" source="49" target="52" weight="0.11921" />
+<edge id="162" source="49" target="56" weight="0.0758612" />
+<edge id="163" source="49" target="94" weight="0.0931217" />
+<edge id="164" source="49" target="128" weight="0.0794422" />
+<edge id="165" source="50" target="104" weight="0.0723695" />
+<edge id="166" source="50" target="111" weight="0.0754238" />
+<edge id="167" source="50" target="119" weight="0.0702278" />
+<edge id="168" source="51" target="64" weight="0.0730797" />
+<edge id="169" source="51" target="77" weight="0.0882979" />
+<edge id="170" source="51" target="128" weight="0.07795" />
+<edge id="171" source="52" target="58" weight="0.143395" />
+<edge id="172" source="52" target="65" weight="0.078303" />
+<edge id="173" source="52" target="68" weight="0.0878967" />
+<edge id="174" source="52" target="73" weight="0.0835151" />
+<edge id="175" source="52" target="75" weight="0.11679" />
+<edge id="176" source="52" target="78" weight="0.092796" />
+<edge id="177" source="52" target="84" weight="0.297809" />
+<edge id="178" source="52" target="94" weight="0.156077" />
+<edge id="179" source="52" target="111" weight="0.126735" />
+<edge id="180" source="52" target="112" weight="0.0841008" />
+<edge id="181" source="52" target="122" weight="0.125719" />
+<edge id="182" source="52" target="128" weight="0.169049" />
+<edge id="183" source="53" target="60" weight="0.0722981" />
+<edge id="184" source="53" target="96" weight="0.124011" />
+<edge id="185" source="53" target="103" weight="0.0922705" />
+<edge id="186" source="53" target="105" weight="0.0797134" />
+<edge id="187" source="53" target="115" weight="0.170075" />
+<edge id="188" source="53" target="118" weight="0.137907" />
+<edge id="189" source="56" target="61" weight="0.0720856" />
+<edge id="190" source="56" target="65" weight="0.0832204" />
+<edge id="191" source="56" target="66" weight="0.0873191" />
+<edge id="192" source="56" target="94" weight="0.0809879" />
+<edge id="193" source="56" target="100" weight="0.117275" />
+<edge id="194" source="56" target="104" weight="0.0774535" />
+<edge id="195" source="56" target="111" weight="0.091556" />
+<edge id="196" source="56" target="122" weight="0.0802051" />
+<edge id="197" source="56" target="127" weight="0.0763929" />
+<edge id="198" source="56" target="128" weight="0.0981541" />
+<edge id="199" source="57" target="62" weight="0.0823129" />
+<edge id="200" source="57" target="67" weight="0.10323" />
+<edge id="201" source="58" target="68" weight="0.0873064" />
+<edge id="202" source="58" target="84" weight="0.129405" />
+<edge id="203" source="58" target="93" weight="0.358094" />
+<edge id="204" source="58" target="94" weight="0.107357" />
+<edge id="205" source="58" target="111" weight="0.0885475" />
+<edge id="206" source="58" target="128" weight="0.0823543" />
+<edge id="207" source="59" target="60" weight="0.107407" />
+<edge id="208" source="59" target="125" weight="0.105088" />
+<edge id="209" source="60" target="81" weight="0.224121" />
+<edge id="210" source="60" target="86" weight="0.122303" />
+<edge id="211" source="60" target="103" weight="0.289565" />
+<edge id="212" source="61" target="66" weight="0.145298" />
+<edge id="213" source="61" target="71" weight="0.0749813" />
+<edge id="214" source="61" target="100" weight="0.0951122" />
+<edge id="215" source="64" target="99" weight="0.0860536" />
+<edge id="216" source="66" target="68" weight="0.0994175" />
+<edge id="217" source="66" target="100" weight="0.085033" />
+<edge id="218" source="67" target="122" weight="0.24961" />
+<edge id="219" source="67" target="123" weight="0.0868952" />
+<edge id="220" source="68" target="80" weight="0.0729134" />
+<edge id="221" source="68" target="84" weight="0.118536" />
+<edge id="222" source="68" target="94" weight="0.0764091" />
+<edge id="223" source="68" target="111" weight="0.0725792" />
+<edge id="224" source="69" target="79" weight="0.11513" />
+<edge id="225" source="69" target="109" weight="0.0732414" />
+<edge id="226" source="69" target="124" weight="0.190095" />
+<edge id="227" source="71" target="92" weight="0.0977502" />
+<edge id="228" source="71" target="100" weight="0.0762406" />
+<edge id="229" source="72" target="128" weight="0.071565" />
+<edge id="230" source="73" target="74" weight="0.148285" />
+<edge id="231" source="73" target="95" weight="0.116064" />
+<edge id="232" source="73" target="111" weight="0.226316" />
+<edge id="233" source="73" target="128" weight="0.124264" />
+<edge id="234" source="74" target="95" weight="0.123749" />
+<edge id="235" source="75" target="78" weight="0.142532" />
+<edge id="236" source="75" target="92" weight="0.0795762" />
+<edge id="237" source="75" target="112" weight="0.113868" />
+<edge id="238" source="75" target="125" weight="0.0712215" />
+<edge id="239" source="77" target="80" weight="0.0927592" />
+<edge id="240" source="77" target="83" weight="0.090587" />
+<edge id="241" source="77" target="127" weight="0.132789" />
+<edge id="242" source="77" target="128" weight="0.173519" />
+<edge id="243" source="78" target="84" weight="0.0738694" />
+<edge id="244" source="78" target="122" weight="0.110193" />
+<edge id="245" source="78" target="128" weight="0.106122" />
+<edge id="246" source="79" target="97" weight="0.182743" />
+<edge id="247" source="81" target="86" weight="0.171354" />
+<edge id="248" source="81" target="99" weight="0.168917" />
+<edge id="249" source="81" target="103" weight="0.180149" />
+<edge id="250" source="82" target="125" weight="0.110403" />
+<edge id="251" source="83" target="86" weight="0.102779" />
+<edge id="252" source="83" target="100" weight="0.0772018" />
+<edge id="253" source="83" target="127" weight="0.0845333" />
+<edge id="254" source="83" target="128" weight="0.171042" />
+<edge id="255" source="84" target="94" weight="0.201126" />
+<edge id="256" source="84" target="108" weight="0.100369" />
+<edge id="257" source="84" target="111" weight="0.0968615" />
+<edge id="258" source="84" target="122" weight="0.117819" />
+<edge id="259" source="84" target="128" weight="0.12964" />
+<edge id="260" source="85" target="88" weight="0.116608" />
+<edge id="261" source="85" target="101" weight="0.173764" />
+<edge id="262" source="85" target="123" weight="0.0840867" />
+<edge id="263" source="87" target="132" weight="0.100379" />
+<edge id="264" source="88" target="101" weight="0.100036" />
+<edge id="265" source="91" target="94" weight="0.0713556" />
+<edge id="266" source="91" target="111" weight="0.0888889" />
+<edge id="267" source="91" target="128" weight="0.0989519" />
+<edge id="268" source="94" target="111" weight="0.154105" />
+<edge id="269" source="94" target="128" weight="0.178445" />
+<edge id="270" source="95" target="109" weight="0.0734654" />
+<edge id="271" source="96" target="105" weight="0.0743367" />
+<edge id="272" source="96" target="115" weight="0.192347" />
+<edge id="273" source="96" target="118" weight="0.135256" />
+<edge id="274" source="99" target="113" weight="0.07119" />
+<edge id="275" source="100" target="121" weight="0.0866093" />
+<edge id="276" source="100" target="127" weight="0.0908187" />
+<edge id="277" source="105" target="115" weight="0.0948237" />
+<edge id="278" source="105" target="118" weight="0.0757519" />
+<edge id="279" source="108" target="115" weight="0.0781498" />
+<edge id="280" source="111" target="122" weight="0.0780101" />
+<edge id="281" source="111" target="128" weight="0.196389" />
+<edge id="282" source="115" target="118" weight="0.283668" />
+<edge id="283" source="121" target="125" weight="0.116035" />
+<edge id="284" source="122" target="123" weight="0.113923" />
+<edge id="285" source="122" target="128" weight="0.0881797" />
+<edge id="286" source="127" target="128" weight="0.0761513" />
+</edges>
+</graph>
+</gexf>
