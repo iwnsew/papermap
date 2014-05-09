@@ -49,6 +49,8 @@ def main():
   dirname = os.path.abspath(os.path.dirname(__file__)) + "/paper/"
   papers = os.listdir(dirname)
   for paper in papers:
+    if paper == ".gitkeep":
+      continue
     #print paper, ":",
     command = shlex.split("pdftotext -raw -enc UTF-8 " + dirname + paper + " -")
     rawtext = subprocess.check_output(command)
