@@ -1,0 +1,2247 @@
+An Efﬁcient Sampling Method for Characterizing
+Points of Interests on Maps
+Pinghui Wang #1 , Wenbo He #2 , Xue Liu #3
+#
+
+School of Computer Science, McGill University, Montreal, Canada
+1
+
+wangpinghui369@gmail.com
+2
+wenbohe@cs.mcgill.ca
+3
+xueliu@cs.mcgill.ca
+
+Abstract—Recently map services (e.g., Google maps) and
+location-based online social networks (e.g., Foursquare) attract
+a lot of attention and businesses. With the increasing popularity
+of these location-based services, exploring and characterizing
+points of interests (PoIs) such as restaurants and hotels on maps
+provides valuable information for applications such as start-up
+marketing research. Due to the lack of a direct fully access to
+PoI databases, it is infeasible to exhaustively search and collect
+all PoIs within a large area using public APIs, which usually
+impose a limit on the maximum query rate. In this paper, we
+propose an effective and efﬁcient method to sample PoIs on maps,
+and give unbiased estimators to calculate PoI statistics such as
+sum and average aggregates. Experimental results based on real
+datasets show that our method is efﬁcient, and requires six times
+less queries than state-of-the-art methods to achieve the same
+accuracy.
+
+I. I NTRODUCTION
+Aggregate statistics (e.g., sum, average, and distribution)
+of points of interests (PoIs), e.g., restaurants and hotels on
+map services such as Google maps [1] and Foursquare [2],
+provide valuable information for applications such as marketing decision making. For example, the knowledge of the PoI
+rating distribution enables us to evaluate a particular PoI’s
+relative service quality ranking. Moreover, a restaurant startup can infer food preferences of people in a geographic area by
+comparing the popularity of restaurant PoIs serving different
+cuisines within the area of interest. Meanwhile, it can also
+estimate its market size based on PoI aggregate statistics, such
+as the number of Foursquare users checked in PoIs within
+the area. Similarly, a hotel start-up can utilize hotel PoIs’
+properties such as ratings and reviews to understand its market
+and competitors.
+To exactly calculate the above aggregate statistics, it requires to retrieve all PoIs within the area of interest. However
+most map service providers do not provide the public with a
+direct fully access to their PoI databases, so we can only rely
+on public map APIs to explore and collect PoIs. Moreover,
+public APIs usually impose limits on the maximum query rate
+and the maximum number of PoIs returned in a response to a
+query, therefore it is costly to collect PoIs within a large area.
+For example, Foursquare map API [3] returns up to 50 PoIs
+per query and it allows 500 queries per hour per account. To
+collect PoIs within 14 cities in Foursquare, Li et al. [4] spent
+almost two months using 40 machines in parallel.
+
+978-1-4799-2555-1/14/$31.00 © 2014 IEEE
+
+To address the above challenge, sampling is required. That
+is, a small fraction of PoIs are sampled and used to calculate
+PoI statistics. Due to the lack of a direct fully access to PoI
+databases, one cannot sample over PoIs in a direct manner,
+so it is hard to sample PoIs uniformly. The existing sampling
+methods [5], [6] have been proved to sample PoIs with biases.
+After sampling a fraction of PoIs using these two methods, one
+has no guarantees whether the PoI statistics obtained directly
+are to be trusted. To solve this problem, Dalvi et al. [5] propose
+a method to correct the sampling bias. However the method is
+costly because it requires a large number of queries for each
+sampled PoI (e.g., on average 55 queries are used in their
+paper). The method in [6] samples PoIs with unknown bias,
+so it is difﬁcult to remove its sampling bias.
+In this work we propose an efﬁcient method to eliminate
+the estimation bias. Our idea is to sample a set of subregions from an area of interest at random and then collect
+PoIs within sampled regions. However, when we query a
+sampled sub-region including a large number of PoIs, an
+unknown sampling bias is introduced if we only collect PoIs
+returned. Otherwise, we need to further divide the sampled
+sub-region to exhaustively collect all PoIs within it. It requires
+a large number of queries. To solve this problem, we divide
+the area of interest into fully accessible sub-regions without
+overlapping, where a region is deﬁned as a fully accessible
+region if it includes PoIs less than the maximum number of
+PoIs returned for a query. Then it is efﬁcient to collect PoIs
+within a sampled sub-region, which requires just one query.
+To sample a fully accessible region, our method works as
+follows: From a speciﬁed area, our method divides the current
+queried region into two sub-regions without overlapping, and
+then randomly selects a non-empty sub-region as the next
+region to query. It repeats this process until it observes a
+fully accessible region. We show that our sampling method
+is efﬁcient, and it requires only several queries to sample a
+fully accessible region. Besides its efﬁciency, the sampling
+bias of our method is easy to be corrected, which requires
+no extra queries in comparison with the existing methods [5],
+[6]. We perform experiments using a variety of real datasets,
+and show that our method dramatically reduces the number of
+queries required to achieve the same estimation accuracy of
+state-of-the-art methods.
+The rest of the paper is organized as follows. The problem
+
+1012
+
+ICDE Conference 2014
+
+(a) Beijing
+
+(b) Shanghai
+Fig. 1.
+
+(c) Guangzhou
+
+(Baidu maps) PoI geographical distributions.
+
+is formulated in Section II. Section III presents our method for
+sampling PoIs on maps and estimating the aggregate statistics
+of PoIs within the area of interest. Performance evaluation
+and real applications on Foursquare and Google maps are
+presented in Section IV. Section V summarizes related work.
+Concluding remarks then follow.
+
+distribution of a set of PoIs, where θj (1 ≤ j ≤ J) is
+the fraction of PoIs with label lj . Formally,
+θj =
+
+1
+|P|
+
+1(L(p) = lj ),
+p∈P
+
+1 ≤ j ≤ J,
+
+In this section, we ﬁrst formulate the problem, and then
+conduct an in-depth analysis of several real datasets to show
+the challenges of solving the problem.
+
+where 1(L(p) = lj ) is the indicator function that
+equals one when predicate L(p) = lj is true, and zero
+otherwise. If L(p) is the star rating of a hotel p, then θ
+is the star rating distribution of hotels within A.
+As alluded before, we focus on designing efﬁcient sampling
+methods to estimate the above statistics.
+
+A. Objectives
+
+B. Datasets
+
+Our aim is to estimate aggregate statistics (e.g., sum,
+average, and distribution) of PoIs’ attributes. Formally, let A
+be the area of interest. Denote by P the set of PoIs within A.
+For example, P can be the set of hotels within A. We want to
+estimate the following statistics over P.
+1) Sum aggregate. For any function f : P → R, where R
+is the set of real numbers, the sum aggregate is deﬁned
+as
+fs (P) =
+f (p).
+
+Table I summarizes the public dataset [7] used in this paper,
+which is collected from Baidu maps for ﬁve areas in China.
+Each area spans a degree of longitude and a degree of latitude.
+They cover ﬁve popular cities in China: Beijing, Shanghai,
+Guangzhou, Shenzhen, and Tianjin. Each dataset consists of
+more than 200 thousand PoIs.
+
+II. BACKGROUND
+
+Table I
+OVERVIEW OF BAIDU P O I D ATASETS U SED IN O UR E XPERIMENTS .
+Area
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+p∈P
+
+If f (p) is the number of rooms a hotel p has, then fs (P)
+corresponds to the total number of hotel rooms within
+A. If f (p) is the constant function f (p) = 1, then fs (P)
+corresponds to |P|, the number of hotels within A.
+2) Average aggregate. For any function f : P → R, the
+average aggregate is deﬁned as
+1
+fa (P) =
+|P|
+
+f (p).
+p∈P
+
+If f (p) is the price per room per night for a hotel p,
+then fa (P) corresponds to the average price for hotels
+within A.
+3) PoI distribution. Let L(p) be the label of a PoI p
+specifying a certain property of p. For example, L(p)
+can be the star rating of a hotel p. Denote the range of
+PoI labels as {l1 , . . . , lJ }. Let θ = (θ1 , . . . , θJ ) be the
+
+Latitude
+39◦ N–40◦ N
+◦ N–31.7◦ N
+30.7
+23◦ N–24◦ N
+22◦ N–23◦ N
+39◦ N–40◦ N
+
+Longitude
+116◦ E–117◦
+121◦ E–122◦
+113◦ E–114◦
+114◦ E–115◦
+117◦ E–118◦
+
+E
+E
+E
+E
+E
+
+PoIs
+606,306
+470,676
+554,114
+322,677
+212,838
+
+C. Challenges
+Figure 1 shows the geographical distribution of PoIs within
+Beijing, Shanghai, and Guangzhou. We can see that PoIs are
+not evenly distributed, but are clustered into sparse and dense
+areas. The lack of the PoI geographical distribution makes it
+challenging to accurately estimate PoI statistics, since it is hard
+to sample PoIs from A uniformly. Suppose that one divides A
+evenly into non-overlapping sub-regions with size: d degrees
+of longitude × d degrees of latitude. Then sample a set of
+sub-regions at random and collect PoIs within sub-regions
+sampled. Next, we show that this straightforward sampling
+method cannot be implemented in practice.
+
+1013
+
+70
+
+50
+40
+30
+20
+10
+
+1
+
+2
+
+4
+6
+8
+Block size d (×0.0001)
+
+60
+50
+40
+30
+20
+10
+0
+
+10
+
+1
+
+(a) Beijing
+
+2
+
+4
+6
+8
+Block size d (×0.0001)
+
+50
+40
+30
+20
+10
+0
+
+10
+
+k=10
+k=20
+k=50
+
+60
+
+1
+
+(b) Shanghai
+Fig. 2.
+
+ON
+
+4
+6
+8
+Block size d (×0.0001)
+
+10
+
+(c) Guangzhou
+
+(Baidu maps) Fractions of inaccessible PoIs.
+
+Let k be the maximum number of PoIs returned for a
+query. A region is deﬁned as an inaccessible sub-region when
+it includes more than k PoIs. Fig. 2 shows the fraction of
+inaccessible PoIs, where inaccessible PoIs refer to the PoIs
+within inaccessible sub-regions. We can see that the number
+of inaccessible PoIs increases with d. When d = 0.001, more
+than 30% of PoIs are inaccessible for k = 10 and k = 20. For
+a sampled inaccessible sub-region r, therefore, it might include
+a large number of PoIs. Then we need to further divide r and
+explore all PoIs within r, which might require a large number
+of queries since r might include a lot of PoIs. Otherwise, k
+PoIs within r are returned by public APIs and they might not
+be randomly selected from the PoIs within r. This introduces
+unknown errors into estimates of PoI’s statistics. Fig. 2 shows
+that almost 10% of PoIs are within inaccessible regions even
+when d = 0.0001 for the Beijing and Shanghai areas. Thus,
+a quite small value of d is required to ensure there is no
+inaccessible sub-region.
+However a small d dramatically increases the number of
+queries required to sample a non-empty sub-region (i.e., a
+region with at least one PoI). Deﬁne ρ as the fraction of nonempty sub-regions among all sub-regions. Then, the hit ratio
+deﬁned as the probability of sampling a non-empty sub-region
+is ρ. To sample a non-empty sub-region, on average we need
+to sample and query 1/ρ sub-regions at random. Fig. 3 shows
+the hit ratios for different d. We can see that ρ increases with
+d. When d = 0.0001, almost 99.8% of sub-regions do not
+include any PoI. Therefore, on average more than 500 queries
+are required to sample a non-empty sub-region for d ≤ 0.0001.
+In summary, the above straightforward sampling method
+is not easy to be implemented, so designing unbiased and
+efﬁcient sampling methods for estimating PoI statistics is a
+much challenging task.
+III. R ANDOM R EGION Z OOM - IN
+
+2
+
+M APS
+
+In this section, we present our sampling method to estimate
+PoI aggregate statistics deﬁned in Section II. We ﬁrst propose a
+random region zoom-in (RRZI) method to sample PoIs within
+an area A of interest, and give our unbiased estimators of PoI
+
+0
+
+10
+
+−1
+
+10
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+Hit ratio
+
+60
+
+70
+k=10
+k=20
+k=50
+
+Fraction of overfload PoIs (%)
+
+k=10
+k=20
+k=50
+
+Fraction of overfload PoIs (%)
+
+Fraction of overfload PoIs (%)
+
+70
+
+−2
+
+10
+
+−3
+
+10
+0.0001
+
+0.0002
+
+Fig. 3.
+
+0.0004
+0.0006
+Block size d
+
+0.0008
+
+0.001
+
+(Baidu maps) Hitting ratios.
+
+statistics. To improve the accuracy of RRZI, we then propose
+a method RRZIC by utilizing the meta information (i.e., the
+total number of PoIs within an input search region) returned
+for a query, which is provided by map services such as Google
+maps. To further reduce the number of queries of RRZI and
+RRZIC required, we propose mix methods RRZI URS and
+RRZIC URS, which ﬁrst pick a small sub-region from A at
+random and then sample PoIs within the sub-region using
+RRZI and RRZIC respectively. For ease of reading, we list
+notations used throughout the paper in Table II.
+A. Random Region Zoom-in
+As shown in Fig. 4, RRZI(A) works as follows: From
+the initial region A, RRZI divides the current queried region
+into two sub-regions without overlapping, and then randomly
+selects a non-empty sub-region as the next region to zoom
+in and query. Repeat this procedure recursively until a fully
+accessible region is ﬁnally observed. The reason of why we
+divide the current region into just two sub-regions is because
+
+1014
+
+Table II
+TABLE OF NOTATIONS
+A
+P
+k
+τ (Q, A), Q ⊆ A
+n(Q)
+χ0 (Q), χ1 (Q)
+δ
+L
+BL
+∗
+BL
+P (r)
+
+V
+m
+
+area of interest
+set of PoIs within A
+maximum number of PoIs returned in a response
+to a query
+probability of sampling a region Q from A
+number of PoIs within a region Q
+two sub-regions obtained by dividing a region Q
+minimum acceptable latitude and longitude
+precision of map APIs
+parameter to control the size of regions
+sampled by URS
+set of sub-regions obtained by iteratively applying
+L times region division operations into A
+set of non-empty regions in BL
+set of PoIs within a region r
+set of fully accessible regions obtained by
+iteratively applying region division operations
+into A
+number of sampled fully accessible regions
+
+it minimizes the number of queries required at each step,
+which will be discussed later. Algorithm 1 shows the pseudocode of RRZI(A). Initially RRZI sets region Q = A. At
+each step, RRZI uses a query searchP oI(Q) to explore PoIs
+within Q, and then determines whether Q is a fully accessible
+region depending on the value of |O|, the number of PoIs
+returned by searchP oI(Q). When |O| equals k, Q might not
+be a fully accessible region, and RRZI divides Q into two
+non-overlapping sub-regions Q0 and Q1 to further explore.
+If Q0 and Q1 are both non-empty regions, RRZI randomly
+selects one as the next region, that is, Q ← random(Q0 , Q1 ).
+Otherwise, RRZI sets Q as the non-empty region among Q0
+and Q1 . RRZI repeats this procedure until a fully accessible
+region Q is observed.
+area of interest
+
+a
+fully accessible regions
+1/2
+
+b
+1
+
+1/2
+
+1
+
+1/2
+
+1/2
+
+c
+1/2
+
+Fig. 4. An example of applying RRZI into the area of interest, where k = 5.
+The number above a red arrow refers to the probability of selecting a subregion of the current queried region to zoom in.
+
+Next, we answer the following three critical questions.
+•
+
+How to divide Q into two non-overlapping regions Q0 and Q1 ? For simplicity, we denote Q =
+[(xSW , ySW ), (xN E , yN E )] as a quadrangle region with
+
+south-west corner (xSW , ySW ) (latitude and longitude
+pair) and north-east corner (xN E , yN E ). Let δ be the
+minimum acceptable latitude and longitude precision
+of map APIs. Let β(xSW , xN E ) be a function whose
+values are positive real numbers. We deﬁne functions
+χ0 (Q) and χ1 (Q) as follows: If |xSW − xN E | ≥
+β(xSW , xN E )|ySW − yN E |, then
+
+ χ (Q) = [(x , y ), (⌈ xSW + xN E ⌉δ − δ, y )]
+ 0
+SW
+SW
+NE
+2δ
+
+ χ1 (Q) = [(⌈ xSW + xN E ⌉δ, ySW ), (xN E , yN E )].
+2δ
+(1)
+Otherwise,
+
+ χ (Q) = [(x , y ), (x , ⌈ ySW + yN E ⌉δ − δ)]
+ 0
+SW
+SW
+NE
+2δ
+ySW + yN E
+
+ χ1 (Q) = [(xSW , ⌈
+⌉δ), (xN E , yN E )].
+2δ
+(2)
+Using functions χ0 and χ1 we divide Q into two subregions χ0 (Q) and χ1 (Q) without overlapping, which almost have the same size. β(xSW , xN E ) is used to control
+the shape of a sub-region ﬁnally sampled. For instance,
+we let β(xSW , xN E ) = 1/ cos(0.5(xSW + xN E )), and
+then the shape of a fully accessible region sampled by
+RRZI approaches to a square, since the physical distance
+between two points on the earth with the same latitude
+x but different longitudes y and y + d is 111d × cos x
+kilometers, and the distance between two points with the
+same longitudes y but different longitudes x and x + d
+is 111d.
+• How to determine whether χ0 (Q) and χ1 (Q) are empty
+regions or not using a minimum number of queries?
+Let O be the set of PoIs within the region Q observed by
+previous queries. If O includes PoIs within both χ0 (Q)
+and χ1 (Q), then neither of χ0 (Q) and χ1 (Q) is empty.
+Otherwise, we query the sub-region with no PoIs in O to
+determine whether it is a truly empty region. Therefore
+RRZI needs at most one query at each step.
+• Does RRZI sample PoIs uniformly? If not, how to
+remove the sampling bias? Fig. 4 shows an example of
+applying RRZI into A, where k = 5. We can see that there
+exist three fully accessible regions a, b, and c, which can
+be observed and sampled by RRZI. The probabilities of
+sampling a, b, and c are 1/2, 1/4, and 1/4 respectively.
+The sampling bias might introduce large errors into the
+measurement of PoI statistics. To solve this problem, we
+use a counter τ to record the probability of sampling a
+region from A, which is used to correct the sampling bias
+later. τ is initialized with 1, and updated as follows: At
+each step, we set τ = τ /2 if both χ0 (Q) and χ1 (Q)
+are non-empty, otherwise τ keeps unchanged. Finally τ
+records the probability of sampling a fully accessible subregion from A.
+At last, we analyze the query cost of RRZI and present our
+unbiased estimators of PoI aggregate statistics under study. We
+can easily ﬁnd that the number of queries required to sample
+
+1015
+
+a fully accessible region is smaller than
+
+Algorithm 1: RRZI(A) pseudo-code.
+
+Hmax = log(Lx /δ) + log(Ly /δ),
+
+/* A is the region of interest.
+input : A
+/* Q is a sub-region sampled
+
+(3)
+
+where Lx and Ly are the length and width of the region A. For
+instance, Hmax equals 60 when δ = 10−6 and A is a region
+with size: one degree of longitude × one degree of latitude.
+Experimental results in a later section show that the associated
+average number of queries required is about 13, which is much
+smaller than Hmax .
+Denote τ (Q, A) as the probability of sampling a fully
+accessible region Q from A. Let P (Q) be the set of PoIs within
+Q. Denote V as the set of fully accessible regions, which
+can be observed by RRZI. Then we have r∈V τ (r, A) = 1.
+Given a set of fully accessible regions ri (1 ≤ i ≤ m) sampled
+by calling the function RRZI(A) m times, we collect PoIs
+within ri , and estimate the sum aggregate fs (P) as
+1
+˜
+fs (P) =
+m
+
+m
+
+i=1 p∈P (ri )
+
+output: Q and τ
+Q ← A, τ ← 1, and l ← 0;
+/* searchPoI(Q) is the set
+O ← searchPoI(Q);
+/* k is the maximum number
+
+*/
+of PoIs returned in a
+
+response to a query.
+
+while |O| = k do
+/* χ0 (Q) and
+
+*/
+
+χ1 (Q) are the two sub-regions of Q
+
+defined as (1) and (2)
+
+*/
+
+Q0 ← χ0 (Q) and Q1 ← χ1 (Q);
+/* If O includes no PoI within
+
+f (p)
+.
+τ (ri , A)
+
+the region Q0 /Q1 ,
+
+then emptyRegion(Q0 , Q1 , O) returns 0/1.
+Otherwise, both Q0 and Q1 are non-empty, and
+emptyRegion(Q0 , Q1 , O) returns -1
+
+i ← emptyRegion(Q0 , Q1 , O);
+if i = −1 then
+O′ ← searchPoI(Qi );
+if |O′ | = 0 then
+Q ← Q1−i ;
+else
+/* random(Q0 , Q1 ) returns
+
+Similarly, we estimate the PoI distribution θ = (θ1 , . . . , θJ )
+as follows
+
+i=1 p∈P (ri )
+
+of PoIs returned for
+
+querying the region Q
+
+r∈V
+
+m
+
+from A at random,
+
+and τ records the probability of sampling Q
+from A.
+*/
+
+˜
+We can easily ﬁnd that fs (P) is an unbiased estimator of
+˜ (P)] = fs (P). The variance of fs (P) is
+˜
+fs (P), that is, E[fs
+
+
+2
+f (p)
+p∈P (r)
+1 
+
+2
+˜
+V ar(fs (P)) =
+− fs (P) .
+
+m
+τ (r, A)
+
+1
+˜
+θj =
+˜
+H
+
+*/
+
+*/
+
+Q0 and Q1 at
+
+random
+
+1(L(p) = lj )
+,
+τ (ri , A)
+
+*/
+
+Q ← random(Q0 , Q1 );
+O ← O′ and τ ← τ /2;
+end
+else
+Q ← random(Q0 , Q1 );
+O ← searchPoI(Q) and τ ← τ /2;
+end
+end
+
+1 ≤ j ≤ J.
+
+i)
+˜
+where H = m τn(r,A) In this section, we do not present
+i=1 (ri
+our method for estimating the average aggregate fa (P). fa (P)
+is easily computed based on our estimates of sum aggregates
+since fa (P) = fs (P)/|P|.
+
+B. Random Region Zoom-in with Count Information
+In this subsection we propose a method, named random
+region zoom-in with count information (RRZIC), to further
+improve the accuracy of RRZI for map services such as Google
+maps, where results from a query include the number of PoIs
+within the input search region. Compared to RRZI, RRZIC
+tends to sample PoIs uniformly, giving us smaller estimation
+errors for PoIs statistics. The pseudo-code RRZIC(A) is shown
+as Algorithm 2. Initially we set Q = A. Denote z as the
+number of PoIs within the current queried region Q. Let z0
+and z1 be the number of PoIs within the two sub-regions
+χ0 (Q) and χ1 (Q) of Q respectively. If z > k, Q is not a
+fully accessible region, and RRZIC queries sub-region χ0 (Q)
+to obtain z0 . With probability z0 /z, RRZIC then selects χ0 (Q)
+to further explore. That is, set Q = χ0 (Q) and z = z0 . Or,
+RRZIC sets Q = χ1 (Q) and z = z0 with probability z1 /z.
+RRZIC repeats this procedure until a fully accessible Q is
+observed. We can easily ﬁnd that RRZIC samples Q from A
+
+with probability τ (Q, A) = n(Q)/n(A), where n(Q) is the
+number of PoIs within Q.
+Given m fully accessible regions ri (1 ≤ i ≤ m) sampled
+by RRZIC, we estimate fs (P) as
+1
+¯
+fs (P) =
+m
+
+m
+
+i=1 p∈P (ri )
+
+f (p)n(A)
+,
+n(ri )
+
+(4)
+
+and estimate θ = (θ1 , . . . , θJ ) as
+1
+¯
+θj =
+m
+
+m
+
+i=1 p∈P (ri )
+
+1(L(p) = lj )
+,
+n(ri )
+
+1 ≤ j ≤ J.
+
+(5)
+
+˜
+˜ ¯
+¯
+Similar to fs (P) and θj , fs (P) and θj are unbiased estimators
+
+1016
+
+of fs (P) and θj , 1 ≤ j ≤ J. Their variances are
+
+
+2
+f (p) n(A)
+p∈P (r)
+1 
+
+2
+¯
+V ar(fs (P)) =
+− fs (P) ;
+
+m
+n(r)
+r∈V
+
+
+
+p∈P (r) 1(L(p) = lj )
+
+1 
+¯
+V ar(θj ) =
+
+m
+
+r∈V
+
+n(r)n(A)
+
+2
+
+
+
+2
+− θj  .
+
+BL = {χi1 (χi2 (...(χiL (A)))) : i1 , i2 , . . . , iL ∈ {0, 1}}.
+
+BL consists of 2L regions. That is, |BL | = 2L . Regions in
+BL are nearly 2L times smaller than A. We assume that they
+are small enough to be used as input regions for public APIs.
+∗
+Let BL be the set of non-empty regions in BL . To sample
+∗
+a region from BL uniformly, URS repeats to sample regions
+from BL at random until a non-empty region is observed.
+Our mix methods RRZI URS and RRZIC URS are modiﬁcations of RRZI and RRZIC. Algorithm 3 shows their pseudocodes. RRZI URS and RRZIC URS ﬁrst randomly select a
+non-empty region b from BL using URS, and then sample a
+fully accessible region from b using RRZI(b) and RRZIC(b)
+∗
+ˆ∗
+respectively. Let |BL | be an estimate of |BL |, which can be
+easily estimated based on the hit ratio of sampling a non-empty
+region from BL using URS. Given m fully accessible regions
+ri (1 ≤ i ≤ m) sampled by RRZI URS or RRZIC URS, we
+estimate fs (P) and θ = (θ1 , . . . , θJ ) as follows
+• Estimators for RRZI URS:
+m
+ˆ
+|B ∗ |
+f (p)
+´
+fs (P) = L
+;
+m i=1
+τ (ri , bi )
+
+Algorithm 2: RRZIC(A) pseudo-code.
+/* A is the region of interest.
+input : A
+/* Q is a sub-region sampled
+
+*/
+
+from A at random,
+
+and τ records the probability of sampling Q
+from A.
+
+*/
+
+output: Q and τ
+Q ← A and τ ← 1;
+/* countPoI(Q) returns the
+z ← countPoI(Q);
+/* k is the maximum number
+
+number of PoIs within Q.
+
+while z > k do
+/* χ0 (Q) and
+
+*/
+
+of PoIs returned in a
+
+response to a query.
+
+*/
+
+χ1 (Q) are the two sub-regions of Q
+
+defined as (1) and (2).
+
+Q0 ← χ0 (Q) and Q1 ← χ1 (Q);
+/* z0 and z1 are the numbers of
+
+*/
+PoIs within the
+
+regions Q0 and Q1 respectively.
+
+z0 ← countPoI(Q0 ) and z1 = z − z0 ;
+/* U (0, 1) is a uniform (0, 1) random sample.
+u ← U (0, 1);
+if u < z0 /z then
+Q ← Q0 , τ ← τ × z0 /z, and z ← z0 ;
+else
+Q ← Q1 , τ ← τ × z1 /z, and z ← z1 ;
+end
+end
+
+required to sample a fully accessible region in comparison
+with RRZI and RRZIC.
+We ﬁrst introduce a uniform region sampling (URS)
+method, which is used to sample sub-regions from A uniformly. Let L be a parameter to control the size of sub-regions
+sampled by URS. Denote BL as the set of sub-regions of
+A obtained by iteratively applying L times region division
+operations deﬁned as (1) and (2) into A. Formally,
+
+p∈P (ri )
+
+*/
+
+1
+´
+θj =
+´
+H
+
+*/
+
+m
+
+i=1 p∈P (ri )
+
+1(L(p) = lj )
+,
+τ (ri , bi )
+
+i
+´
+where H = i=1 τ n(r,b) ) .
+(ri i
+Estimators for RRZIC URS:
+m
+ˆ
+|B ∗ |
+`
+fs (P) = L
+m i=1
+
+1 ≤ j ≤ J,
+
+m
+
+•
+
+p∈P (ri )
+
+1
+`
+θj =
+`
+H
+C. Random Region Zoom-in Combined with Uniform Region
+Sampling
+Public map APIs might impose a limit on the size of input
+regions. For example, Foursquare returns an error message
+“Your geographic boundary is too big. Please search a smaller
+area.” for a query speciﬁed with an input quadrangle region
+with size: 3 degrees of longitude × 3 degrees of latitude,
+although it does not literally state any limit on the input
+quadrangle region. Thus, RRZI and RRZIC cannot be directly
+applied to sample PoIs from a large area on Foursquare. To
+solve this problem, we propose mix methods, which ﬁrst pick
+a small sub-region from A at random and then sample PoIs
+within the sub-region using RRZI and RRZIC. Moreover, we
+show that our mix methods also reduce the number of queries
+
+m
+
+i=1 p∈P (ri )
+
+f (p)n(bi )
+;
+n(ri )
+
+1(L(p) = lj )n(bi )
+,
+n(ri )
+
+1 ≤ j ≤ J,
+
+`
+where H = m n(bi ).
+i=1
+Finally, we analyze the query costs of the above mixing
+methods. To sample a non-empty region from BL at random,
+∗
+on average URS needs to sample and query |BL |/|BL | regions
+from BL , but RRZI and RRZIC require L queries. Thus, the
+mixing methods are more efﬁcient than RRZI and RRZIC
+∗
+when |BL |/|BL | < L, which is true for small values of L.
+IV. DATA E VALUATION
+In this section, we ﬁrst conduct experiments on real world
+datasets listed in Table I to evaluate the performance of our
+methods for estimating PoI aggregate statistics. Then we apply
+our methods to characterize PoIs on Foursquare and Google
+maps in the wild.
+
+1017
+
+Algorithm 3: RRZI URS/RRZIC URS pseudo-code.
+/* A is the region of interest.
+input : A and L
+/* ri , 1 ≤ i ≤ m, are sub-regions
+
+*/
+
+sampled from A
+
+at random, and τ (ri , bi ) records the probability
+of sampling ri from a region bi , where bi is
+∗
+sampled from the set BL at random.
+
+*/
+
+output: r1 , . . . , rm and τ (r1 , b1 ), . . . , τ (rm , bm ).
+i ← 1;
+while i ≤ m do
+/* URS(A) returns
+
+a region sampled from the
+
+∗
+set BL at random.
+
+*/
+
+bi ← URS(A);
+/* The following
+
+statement is used for
+RRZI_URS. For RRZIC_URS, it should be
+[ri , τ (ri , bi )] ← RRZIC(bi )
+
+*/
+
+[ri , τ (ri , bi )] ← RRZI(bi );
+i ← i + 1;
+end
+
+A. Results of Estimating n(A)
+We evaluate the performance of our methods RRZI and
+RRZI URS for estimating n(A), the total number of PoIs
+within the area of interest A, which is an important statistic
+studied in [5], [6]. In this subsection, our sampling methods using the PoI count information (i.e., RRZIC and RRZIC URS)
+are not studied, since we assume that map services do not
+provide a public API where results from a query include
+the number of PoIs within an input search region (otherwise n(A) can be obtained in a direct manner). We deﬁne
+the normalized root mean square error (NRMSE), that is
+ˆ
+NRMSE(n(A)) = E[(ˆ (A) − n(A))2 ]/n(A), be a metric to
+n
+measure the relative error of the estimate n(A) with respect to
+ˆ
+its true value n(A). In the following experiments, we average
+the estimates and calculate their NRMSEs over 10,000 runs.
+Fig. 5 shows the NRMSEs of estimates of n(A) for RRZI with
+different m, the number of fully accessible regions sampled.
+We can see that the NRMSEs decrease as m increases, and
+√
+are roughly proportional to 1/ m. Meanwhile, RRZI exhibits
+smaller errors for larger k, the maximum number of PoIs
+returned in a response to a query. Fig. 6 shows the average
+number of queries required to sample a fully accessible region
+for RRZI URS with different L, where the y-axis is in log
+scale. We can see that the query cost of RRZI URS ﬁrst
+decreases with L and then increases with L. It is because URS
+needs only one or two queries to sample a non-empty subregion for small and medium L, but a large number of queries
+is required for large L, which is shown in Fig. 7. In practice,
+we can conduct a pilot study to estimate the optimal value
+of L. Fig. 8 shows the compared NRMSEs of estimates of
+n(A) for RRZI URS with different L under the same number
+of queries (10,000 queries). We can see that the NRMSEs
+ﬁrst decrease with L and then increase with L. RRZI URS
+
+with L = 10, L = 15, and L = 20 are almost 2 times more
+accurate than RRZI URS with L = 0, which is equivalent to
+RRZI. It indicates that RRZI URS requires nearly 4 times less
+queries than RRZI to achieve the same estimation accuracy,
+√
+since the NRMSEs are roughly proportional to 1/ m, which
+is observed in Fig. 5.
+We compare our methods with the state-of-the-art methods
+nearest-neighbor search (NNS) [5] and random region sampling (RRS) [6]. Fig. 9 shows the average number of queries
+required to obtain an estimate of n(A) with NRMSE less than
+0.1 for RRZI and RRZI URS in comparison with NNS and
+RRS, where we set L = 15 and k = 20. We can see that
+RRZI URS requires 8 and 6 times less queries than RRS
+and NNS respectively. Here the results of NNS are obtained
+based on the assumption that a NNS API is supported by map
+service providers. When map services such as Foursquare do
+not provide such a NNS API, the PoI closest to a randomly
+sampled point (x, y) can be obtained by applying a binary
+search to ﬁnd a radius r, which ensures at least one and at most
+k PoIs are within the circle with center (x, y) and radius r.
+Thus, on average log(W/δ) queries are required to get the PoI
+closest to (x, y), where δ be the minimum acceptable precision
+for public APIs and W is the diameter of A. Let D(p) be the
+set of points in the plane A that are closer to p than the other
+PoIs, which is used to correct the sampling bias of the NNS
+method. Table III shows that on average a thousand queries
+are required to sample a PoI p and determine D(p), which
+indicates that the NNS method requires much more queries
+than our methods to achieve the same estimation accuracy
+when the NNS API is not available.
+Table III
+(BAIDU M APS ) AVERAGE NUMBER OF QUERIES REQUIRED FOR SAMPLING
+A P O I p AND DETERMINING D(p) WHEN THE NNS API IS NOT
+AVAILABLE .
+Area
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+k = 10
+1,196
+1,176
+1,172
+1,154
+1,106
+
+k = 20
+1,079
+1,076
+1,043
+1,038
+1,034
+
+k = 50
+995
+982
+969
+931
+909
+
+B. Results of Estimating Average and Distribution Statistics
+In this subsection, we conduct experiments to evaluate the
+performance of our methods for estimating PoIs’ average and
+distribution statistics. For the Baidu PoI datasets we used, PoIs
+are classiﬁed into different types such as restaurant, hotel, and
+shopping. The numbers of restaurant-tpye PoIs are 75,255,
+36,417, 24,353, 16,025, and 10,032 for datasets Beijing,
+Shanghai, Guangzhou, Shenzhen, and Tianjin respectively. We
+use these restaurant-type PoIs to generate benchmark datasets
+for our following experiments.We manually generate a cost for
+each restaurant-type PoI using two different cost distribution
+schemes CDS UNI and CDS NOR. For CDS UNI, the cost
+of a PoI is uniformly selected from the range (0, 300) at
+random. For CDS NOR, the cost of a PoI is a positive
+
+1018
+
+0.5
+
+0.5
+
+0
+100 200
+
+400
+
+600
+m
+
+800
+
+0
+100 200
+
+1000
+
+Fig. 5.
+
+400
+
+800
+
+400
+
+600
+m
+
+800
+
+1000
+
+(c) k = 50
+
+3
+
+average number of queries
+
+2
+
+10
+
+3
+
+10
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+1
+
+10
+
+0
+
+10
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+2
+
+10
+
+1
+
+10
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+10
+
+5
+
+10
+
+15
+
+1
+
+10
+
+10
+
+0
+
+5
+
+10
+
+15
+
+20
+
+25
+
+(c) k = 50
+
+(Baidu maps) Average number of queries required to sample a fully accessible region for RRZI URS.
+
+5
+
+number of queries required
+
+2.5
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+2
+
+25
+
+(b) k = 20
+
+3
+
+10
+
+2
+
+10
+
+L
+
+number randomly selected from (0, +∞) according to a normal
+distribution with mean 150 and stand deviation 100.
+10
+
+20
+
+L
+
+(a) k = 10
+Fig. 6.
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+0
+
+0
+
+L
+
+average number of queries required
+
+0
+100 200
+
+1000
+
+(b) k = 20
+
+3
+
+average number of queries
+
+600
+m
+
+(Baidu maps) NRMSEs of estimates of n(A) for RRZI with different m, where m is the number of fully accessible regions sampled.
+
+10
+
+0
+
+1
+
+0.5
+
+(a) k = 10
+
+10
+
+NRMSE
+
+1
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+1.5
+
+average number of queries
+
+NRMSE
+
+1
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+1.5
+
+NRMSE
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+1.5
+
+x 10
+
+2
+
+RRZI_URS
+RRZI
+RRS
+NNS
+
+1.5
+1
+0.5
+
+1
+
+10
+
+0
+Beijing
+0
+
+10
+
+0
+
+5
+
+10
+
+15
+
+20
+
+Shanghai Guangzhou Shenzhen
+dataset
+
+Tianjin
+
+Fig. 9. (Baidu maps) The number of queries required to obtain an estimate
+of n(A) with NRMSE less than 0.1 for RRZI URS and RRZI in comparison
+with the state-of-the-art methods NNS [5] and RRS [6].
+
+25
+
+L
+Fig. 7. (Baidu maps) Average number of queries required to sample a nonempty sub-region for URS with different L.
+
+Figures 10 and 11 show our experimental results. Fig. 10
+shows the results for estimating the average cost of restaurant-
+
+type PoIs for different methods under 1,000 queries, where we
+set L = 9 for our mix methods RRZI URS and RRZIC URS.
+We can see that RRZI URS is almost 2 times more accurate
+than RRZI. RRZIC and RRZIC URS utilizing PoI count infor-
+
+1019
+
+NRMSE
+
+0.6
+
+0.4
+
+0.5
+0.4
+
+0.2
+
+0
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+0.3
+0.2
+
+0.4
+
+5
+
+10
+
+15
+
+20
+
+0
+
+25
+
+0
+
+5
+
+10
+
+L
+
+15
+
+20
+
+0
+
+25
+
+0
+
+L
+
+(a) k = 10
+Fig. 8.
+
+0.2
+
+0.1
+
+0.1
+
+0
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+0.3
+NRMSE
+
+Beijing
+Shanghai
+Guangzhou
+Shenzhen
+Tianjin
+
+NRMSE
+
+0.8
+
+5
+
+10
+
+15
+
+20
+
+25
+
+L
+
+(b) k = 20
+
+(c) k = 50
+
+(Baidu maps) Compared NRMSEs of estimates of n(A) for RRZI URS with different L under 10,000 queries.
+
+0.3
+
+0.25
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.25
+
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.2
+
+0.11
+0.1
+
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.15
+
+0.15
+
+NRMSE
+
+0.2
+
+NRMSE
+
+NRMSE
+
+0.09
+
+0.1
+
+0.08
+0.07
+0.06
+
+0.1
+
+0.05
+
+0.05
+
+0.04
+0.05
+Beijing
+
+Shanghai Guangzhou Shenzhen
+dataset
+
+0
+Beijing
+
+Tianjin
+
+(a) CDS UNI, k = 10
+
+Shanghai Guangzhou Shenzhen
+dataset
+
+0.03
+Beijing
+
+Tianjin
+
+(b) CDS UNI, k = 20
+
+0.3
+
+Shanghai Guangzhou Shenzhen
+dataset
+
+Tianjin
+
+(c) CDS UNI, k = 50
+
+0.25
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.25
+
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.2
+
+0.11
+0.1
+
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.15
+
+0.15
+
+NRMSE
+
+NRMSE
+
+NRMSE
+
+0.09
+0.2
+
+0.1
+
+0.08
+0.07
+0.06
+
+0.1
+
+0.05
+
+0.05
+
+0.04
+0.05
+Beijing
+
+Shanghai Guangzhou Shenzhen
+dataset
+
+(d) CDS NOR, k = 10
+Fig. 10.
+
+Tianjin
+
+0
+Beijing
+
+Shanghai Guangzhou Shenzhen
+dataset
+
+Tianjin
+
+(e) CDS NOR, k = 20
+
+0.03
+Beijing
+
+Shanghai Guangzhou Shenzhen
+dataset
+
+Tianjin
+
+(f) CDS NOR, k = 50
+
+(Baidu maps) Compared NRMSEs of estimates of restaurant PoIs’ average cost for different methods under 1, 000 search queries.
+
+mation are more accurate than RRZI and RRZI URS. Next,
+we evaluate the performance of our methods for estimating
+the cost distribution of restaurant-type PoIs. For simplicity,
+we divide the values of PoIs’ costs into six intervals: 1)
+(0, 50], 2) (50, 100], 3) (100, 150], 4) (150, 200], 5) (200,
+250], and 6) (250, +∞). Denote by θ = (θ1 , . . . , θ6 ) the cost
+distribution, where θi is the fraction of PoIs with cost within
+the j-th interval, 1 ≤ j ≤ 6. For CDS UNI and CDS NOR,
+their associated distributions are θ(UNI) = {1/6, . . . , 1/6}
+and θ(NOR) = (0.09, 0.016, 0.20, 0.21, 0.16, 0.18) respectively.
+Fig. 11 shows the NRMSEs of estimates of θ(UNI) and θ(NOR)
+for different methods under 1,000 queries, where we set
+
+k = 20 and L = 8. Similar to the average statistic, we can
+see that RRZI URS and RRZIC URS are more accurate than
+RRZI and RRZIC respectively.
+C. Real Applications
+In this subsection, we present our real applications on
+Foursquare and Google maps. The following results are
+obtained based on PoIs sampled on April 21–30, 2013.
+Foursquare provides a public API [3], which allows developers to explore a particular category of PoIs by setting the
+parameter “categoryId”. It deﬁnes a three-level hierarchical
+structure of PoIs categories. The nine top-level categories
+
+1020
+
+0.9
+
+0.9
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.8
+
+0.7
+
+0.6
+
+NRMSE
+
+NRMSE
+
+0.7
+
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.8
+
+0.5
+0.4
+
+0.6
+0.5
+0.4
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.1
+
+1
+
+2
+
+3
+4
+i−th interval
+
+5
+
+0.1
+
+6
+
+1
+
+2
+
+(a) Beijing, θ (UNI)
+
+5
+
+6
+
+(b) Beijing, θ (NOR)
+
+0.9
+
+0.9
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.8
+0.7
+
+RRZI
+RRZIC
+RRZI_URS
+RRZIC_URS
+
+0.8
+0.7
+
+0.6
+
+NRMSE
+
+NRMSE
+
+3
+4
+i−th interval
+
+0.5
+0.4
+
+0.6
+0.5
+0.4
+
+0.3
+
+0.3
+
+0.2
+
+0.2
+
+0.1
+
+1
+
+2
+
+3
+4
+i−th interval
+
+5
+
+0.1
+
+6
+
+(c) Shanghai, θ (UNI)
+Fig. 11.
+
+1
+
+2
+
+3
+4
+i−th interval
+
+5
+
+6
+
+(d) Shanghai, θ (NOR)
+
+(Baidu maps) Compared NRMSEs of estimates of restaurant PoIs’ cost distribution for different methods under 1, 000 search queries.
+
+are listed in Table IV. If “categoryId” is speciﬁed as a toplevel category, all sub-categories will also match the query.
+Let A be the area with latitude from 26◦ N to 49◦ N and
+longitude from 125◦ W to 67◦ W, which covers almost the
+entire US territory. We apply our method RRZI URS to
+sample PoIs within A. For each top-level category, we sampled
+about 1.0 × 105 fully accessible regions. Table IV shows our
+estimated statistics of PoIs within A. In terms of the average
+statistics (i.e., the average numbers of check-ins, tips, and
+users), Food, Nightlife Spot, and Shop & Service are the top-3
+popular categories. Moreover, we can see that 25.8% of PoIs
+belong to the Residence category, which includes four subcategories: Living, Home (Private), Housing Development, and
+Residential Buildings (Appartments/Condos). It indicates that
+a large number of users have revealed their exact living places
+to Foursquare.
+
+Similarly we apply our methods to sample and characterize
+food-type PoIs within US on Google maps. The Google public
+API [8] returns results including PoIs’ ratings and price levels.
+A PoI’s rating and price level are calculated based on its
+user reviews, where a PoI’s rating ranges from 1.0 to 5.0,
+and a PoI’s price level is an integer with the range 0 (most
+affordable) to 4 (most expensive). Among 4.7 million foodtyped PoIs sampled, 15.5% and 18.2% of PoIs’ ratings and
+price levels are available respectively. Based on these PoIs, we
+estimate the PoI price level distribution and ﬁnd that 0.05%,
+72.5%, 25.8%, 1.6%, and 0.06% of PoIs’ price levels are 0 to
+4 respectively. Fig. 12 shows our estimate of the PoI rating
+distribution. We can see that most PoIs have high ratings. The
+average rating is 3.9, and nearly 90% of PoIs have ratings
+larger than 3.0. Thus, it is hard to evaluate a PoI’s relative
+service quality just depending on its rating value.
+
+1021
+
+Table IV
+(O UR REAL APPLICATION ON F OURSQUARE ) S TATISTICS OF P O I S IN US.
+Category
+Food
+Nightlife Spot
+Shop & Service
+Travel & Transport
+Arts & Entertainment
+College & University
+Outdoors & Recreation
+Residence
+Professional & Others
+
+Fraction
+(%)
+10.4
+6.4
+14.1
+7.3
+3.7
+2.2
+16.0
+25.8
+14.0
+
+Average statistics (per PoI)
+# tips
+# check-ins
+# users
+6.6
+757
+304
+3.4
+422
+166
+1.9
+526
+141
+0.8
+278
+77
+1.8
+370
+194
+1.0
+353
+59
+0.7
+207
+64
+0.2
+83
+5
+0.7
+237
+45
+
+shown in Fig. 13. Dalvi et al. [5] prove that their method
+samples PoIs with biases, and the probability of sampling p
+is γ(p) = area(D(p)) . To remove the sampling bias, a large
+area(A)
+number of NNS queries (e.g., on average 55 queries are used
+in [5]) are required to determine the boundary of D(p) for
+each sampled PoI p. Therefore the method in [5] is quite
+expensive especially for service providers such as Foursquare,
+which does not provide a NNS API to the public.
+D(p): points closest to PoI p
+PoI
+
+10
+
+p
+
+fraction (%)
+
+8
+6
+4
+
+Fig. 13.
+
+D(p) of a PoI p.
+
+2
+0
+1.0
+
+B. Random Region Sampling
+1.5
+
+2.0
+
+2.5
+
+3.0 3.5
+rating
+
+4.0
+
+4.5
+
+5.0
+
+Fig. 12. (Our real application on Google maps) Rating distribution of foodtype PoIs within US.
+
+V. R ELATED W ORK
+Recently a lot of attention has been paid to study hidden
+databases using public search interfaces. Previous work focuses on crawling, retrieving, and mining information from
+web search engines [9]–[12], text-based databases [13]–[19]
+and form-based [20]–[28] databases. Several sampling methods are given in [11], [29]–[33] to estimate a form-based
+hidden database’s size (number of tuples). These methods are
+designed for search engines with inputs speciﬁed as categorical
+data, and their performances depend on the range of input
+values, so they cannot be directly applied to sample PoIs using
+map-based search engines, which have a quite large number
+of input values (latitude and longitude pairs within the area
+of interest). To address this challenge, two methods in [5]
+and [6] are given to sample PoIs using public map APIs. Next
+we discuss these two methods in detail.
+A. Nearest-Neighbor Search
+Dalvi et al. [5] propose a method to sample PoIs using the
+nearest-neighbor search (NNS) API, which returns the several
+closest PoIs to an input location speciﬁed as a pair of latitude
+and longitude. Their method works as follows: At each step,
+it ﬁrst randomly selects a point (x, y) from A, the area of
+interest. Then it ﬁnds and samples the closest PoI p to (x, y)
+using a NNS query. Denote by D(p) the points in the plane
+A that are closer to p than the other PoIs. An example is
+
+Li et al. [6] propose a random region sampling (RRS)
+method to estimate the number of PoIs within A. RRS ﬁrst
+picks a point (x, y) from A at random. Then, it computes
+ˆ
+an estimate d of the PoI density around (x, y) based on the
+PoI densities of regions sampled previously, and initializes a
+new search region as a square with center (x, y) and length
+ˆ
+k/d, where k is the maximum number of PoIs returned for
+a query. If the new region has overlapping with any region
+sampled previously, then RRS cuts the new region to make it
+not collide with any sampled regions. At last RRS exhaustively
+searches and collects PoIs within the new region. Let n(Q) be
+the number of PoIs within a region Q. Given m > 0 sampled
+regions Qi (1 ≤ i ≤ m), Li et al. [6] estimate n(A) as follows
+n(A) =
+ˆ
+
+area(A)
+m
+
+m
+
+i=1
+
+n(Qi )
+.
+area(Qi )
+
+(6)
+
+We ﬁnd that RRS has following drawbacks: 1) At the beginning of RRS, its PoI density estimate might exhibit a large
+error, so a large and dense region might be determined to
+explore. It requires a large number of queries to collect all PoIs
+within this region. 2) A very small region might be sampled
+from sparse areas due to RRS’ region cutting operation. Then
+the number of PoIs within this small region is overestimated
+in equation (6). 3) n(A) is not an unbiased estimator of n(A)
+ˆ
+and it might exhibit a large error. As shown in Fig. 14, A is
+speciﬁed as an 1 × T quadrangle, where T ≫ 1. A has two
+PoIs p1 and p2 . Suppose that k = 1 and the distance between
+p1 and p2 is larger than 1. Let Q1 and Q2 be the regions
+sampled by RRS, which include p1 and p2 respectively. Clearly
+area(Q1 ) and area(Q2 ) are not larger than 1. Therefore, we
+have n(A) ≥ T ≫ n(A) = 2.
+ˆ
+
+1022
+
+PoI p2
+
+PoI p1
+
+S2
+
+S1
+Fig. 14.
+
+An example of sampling PoIs using RRS.
+
+VI. C ONCLUSIONS
+In this paper, we propose methods to sample PoIs on maps,
+and give unbiased estimators of PoI aggregate statistics. We
+show that the mix method RRZI URS is more accurate than
+RRZI under the same number of queries used. When PoI count
+information is provided by public APIs, RRZIC URS utilizing
+this meta information is more accurate than RRZI URS. The
+experimental results based on a variety of real datasets show
+that our methods are efﬁcient, and they sharply reduce the
+number of queries required to achieve the same estimation
+accuracy of state-of-the-art methods.
+ACKNOWLEDGMENT
+We thank the anonymous reviewers as well as Prof. Bettina
+Kemme and Junzhou Zhao for helpful suggestions.
+R EFERENCES
+[1] “Google maps,” https://maps.google.com/, 2012.
+[2] “Foursquare,” http://www.foursquare.com.
+[3] “search venues on foursqure,” https://developer.foursquare.com/docs/
+venues/search, 2013.
+[4] Y. Li, M. Steiner, L. Wang, Z.-L. Zhang, and J. Bao, “Exploring venue
+popularity in foursquare,” in The Fifth IEEE International Workshop on
+Network Science for Communication Networks, 2013, pp. 1–6.
+[5] N. Dalvi, R. Kumar, A. Machanavajjhala, and V. Rastogi, “Sampling
+hidden objects using nearest-neighbor oracles,” in Proceedings of ACM
+SIGKDD 2011, December 2011, pp. 1325–1333.
+[6] Y. Li, M. Steiner, L. Wang, Z.-L. Zhang, and J. Bao, “Dissecting
+foursquare venue popularity via random region sampling,” in Proceedings of the 2012 ACM conference on CoNEXT student workshop, 2012,
+pp. 21–22.
+[7] “Baidu poi datasets,” http://ishare.iask.sina.com.cn/f/34170612.html,
+2013.
+[8] “search places on google maps,” https://developer.foursquare.com/docs/
+venues/search, 2013.
+[9] P. Rusmevichientong, D. M. Pennock, S. Lawrence, and L. C. Giles,
+“Methods for sampling pages uniformly from the world wide web,”
+in AAAI Fall Symposium on Using Uncertainty Within Computation,
+November 2001, pp. 121–128.
+[10] Z. Bar-Yossef and M. Gurevich, “Efﬁcient search engine measurements,”
+in Proceedings of WWW 2007, 2007, pp. 401–410.
+[11] ——, “Mining search engine query logs via suggestion sampling,”
+Proceedings of VLDB Endowment, vol. 1, no. 1, pp. 54–65, Aug. 2008.
+[12] M. Zhang, N. Zhang, and G. Das, “Mining a search engine’s corpus: efﬁcient yet unbiased sampling and aggregate estimation,” in Proceedings
+of SIGMOD 2011, New York, NY, USA, 2011, pp. 793–804.
+[13] J. Callan and M. Connell, “Query-based sampling of text databases,”
+ACM Trans. Inf. Syst., vol. 19, no. 2, pp. 97–130, Apr. 2001.
+[14] P. G. Ipeirotis and L. Gravano, “Distributed search over the hidden web:
+hierarchical database sampling and selection,” in Proceedings of VLDB
+2002, 2002, pp. 394–405.
+[15] E. Agichtein, P. G. Ipeirotis, and L. Gravano, “Modeling query-based
+access to text databases,” in WebDB, 2003, pp. 87–92.
+[16] L. Barbosa and J. Freire, “Siphoning hidden-web data through keywordbased interfaces,” in SBBD, 2004, pp. 309–321.
+[17] A. Ntoulas, P. Zerfos, and J. Cho, “Downloading textual hidden web
+content through keyword queries,” in Proceedings of JCDL 2005, New
+York, NY, USA, 2005, pp. 100–109.
+
+[18] K. Vieira, L. Barbosa, J. Freire, and A. Silva, “Siphon++: a hiddenwebcrawler for keyword-based interfaces,” in Proceedings of CIKM
+2008, 2008, pp. 1361–1362.
+[19] X. Jin, N. Zhang, and G. Das, “Attribute domain discovery for hidden
+web databases,” in Proceedings of SIGMOD 2011, 2011, pp. 553–564.
+[20] N. Bruno, L. Gravano, and A. Marian, “Evaluating top-k queries over
+web-accessible databases,” in Proceedings of ICDE 2002, 2002, pp. 369–
+380.
+´
+[21] M. Alvarez, J. Raposo, A. Pan, F. Cacheda, F. Bellas, and V. Carneiro,
+“Crawling the content hidden behind web forms,” in Proceedings of
+ICCSA 2007, 2007, pp. 322–333.
+[22] A. Cal` and D. Martinenghi, “Querying the deep web,” in Proceedings
+ı
+of EDBT 2010, New York, NY, USA, 2010, pp. 724–727.
+[23] S. Raghavan and H. Garcia-Molina, “Crawling the hidden web,” in
+Proceedings of VLDB 2001, 2001, pp. 129–138.
+[24] C. Sheng, N. Zhang, Y. Tao, and X. Jin, “Optimal algorithms for
+crawling a hidden database in the web,” in Proceedings of the VLDB
+Endowment 2012, vol. 5, 2012, pp. 1112–1123.
+[25] T. Liu, F. Wang, and G. Agrawal, “Stratiﬁed sampling for data mining
+on the deep web,” in Proceedings of the ICDM 2010, 2010, pp. 324–333.
+[26] T. Liu and G. Agrawal, “Active learning based frequent itemset mining
+over the deep web,” in Proceedings of ICDE 2011, 2011, pp. 219–230.
+[27] ——, “Stratiﬁed k-means clustering over a deep web data source,” in
+Proceedings of KDD 2012, 2012, pp. 1113–1121.
+[28] S. Thirumuruganathan, N. Zhang, and G. Das, “Digging deeper into
+deep web databases by breaking through the top-k barrier,” CoRR, vol.
+abs/1208.3876, 2012.
+[29] A. Dasgupta, G. Das, and H. Mannila, “A random walk approach to
+sampling hidden databases,” in Proceedings of SIGMOD 2007, 2007,
+pp. 629–640.
+[30] A. Dasgupta, N. Zhang, and G. Das, “Leveraging count information in
+sampling hidden databases,” in Proceedings of ICDE 2009, 2009, pp.
+329–340.
+[31] A. Dasgupta, X. Jin, B. Jewell, N. Zhang, and G. Das, “Unbiased
+estimation of size and other aggregates over hidden web databases,”
+in Proceedings of SIGMOD 2010, 2010, pp. 855–866.
+[32] A. Dasgupta, N. Zhang, and G. Das, “Turbo-charging hidden database
+samplers with overﬂowing queries and skew reduction,” in Proceedings
+of EDBT 2010, 2010, pp. 51–62.
+[33] F. Wang and G. Agrawal, “Effective and efﬁcient sampling methods for
+deep web aggregation queries,” in Proceedings of EDBT/ICDT 2011,
+2011, pp. 425–436.
+
+1023
+
+
